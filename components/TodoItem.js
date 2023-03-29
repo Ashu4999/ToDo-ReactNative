@@ -1,5 +1,5 @@
 import React, { useState, useContext } from "react";
-import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, View, Alert, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import { DataContext } from "../App";
 import InputDialog from "./InputDialog";
@@ -24,6 +24,12 @@ export default function TodoItem({ item, makeCompleteOrInComplete, removeTask })
         setDialogVisible(false);
     };
 
+    const createTwoButtonAlert = () =>
+        Alert.alert('Alert Title', 'Are you sure you want to delete this task?', [
+            { text: 'Cancel', style: 'cancel', },
+            { text: 'OK', onPress: () => removeTask(id) },
+        ]);
+
     return (
         <View style={styles.taskItem}>
             <View style={{ maxWidth: "70%" }}>
@@ -37,7 +43,7 @@ export default function TodoItem({ item, makeCompleteOrInComplete, removeTask })
             <View>
                 {completed ?
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={() => { removeTask(id); }}>
+                        <TouchableOpacity onPress={() => { createTwoButtonAlert(id) }}>
                             <Icon name="delete" size={30} color={"red"} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { makeCompleteOrInComplete(id, "edit"); }}>
