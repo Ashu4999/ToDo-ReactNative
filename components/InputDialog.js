@@ -1,11 +1,22 @@
 import { View, Text, TextInput, Modal, Button, StyleSheet, TouchableOpacity } from "react-native";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
+import { DataContext } from "../App";
 
-export default function InputDialog(props) {
+export default function EditTaskDialog(props) {
+    const { selectedID } = props;
     const [task, setTask] = useState({ id: "", title: "", description: "", completed: false });
     const [customError, setCustomError] = useState("");
+    const dataContext = useContext(DataContext);
+    const { data, setData } = dataContext;
 
-    const handleAdd = () => {
+    useEffect(() => {
+        if (selectedID) {
+            let selectedData = data.find(item => item.id == selectedID);
+            setTask(selectedData);
+        }
+    }, [selectedID]);
+
+    const handleAddOrUpdate = () => {
         if (!task.title || !task.description) {
             setCustomError("Please fill all details");
             return;
@@ -37,7 +48,7 @@ export default function InputDialog(props) {
                 {customError.length > 0 && <Text style={{ color: "red" }}>{`*${customError}`}</Text>}
                 <View style={styles.buttonContainer}>
                     <Button title="Cancel" onPress={props.onClose} />
-                    <Button title="Add" onPress={handleAdd} />
+                    <Button title={selectedID ? "Update" : "Add"} onPress={handleAddOrUpdate} />
                 </View>
             </View>
         </Modal>

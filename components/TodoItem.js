@@ -2,18 +2,21 @@ import React, { useState, useContext } from "react";
 import { StyleSheet, Text, View, Button, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import { DataContext } from "../App";
-import EditTaskDialog from "./EditTaskDialog";
+import InputDialog from "./InputDialog";
 
 export default function TodoItem({ item, makeCompleteOrInComplete, removeTask }) {
     const { id, title, description, completed } = item;
     const [dialogVisible, setDialogVisible] = useState(false);
+    const [selectedID, setSelectedID] = useState(null);
     const dataContext = useContext(DataContext);
+    const { data, setData } = dataContext;
 
-    const handleAdd = (task) => {
-        let maxIndexObj = data.reduce((max, obj) => max.id < obj.id ? obj : max, data[0]);
-        let maxIndex = maxIndexObj ? parseInt(maxIndexObj.id) + 1 : 1;
-        task.id = maxIndex;
-        setData([...data, task]);
+    const handleUpdateTask = (task) => {
+        let tempData = data;
+        let taskObjToUpdate = tempData.find(item => item.id == task.id);
+        taskObjToUpdate.title = task.title;
+        taskObjToUpdate.description = task.description;
+        setData(tempData);
         setDialogVisible(false);
     };
 
@@ -43,7 +46,7 @@ export default function TodoItem({ item, makeCompleteOrInComplete, removeTask })
                     </View>
                     :
                     <View style={styles.buttonContainer}>
-                        <TouchableOpacity onPress={() => { setDialogVisible(true); }}>
+                        <TouchableOpacity onPress={() => { setSelectedID(id); setDialogVisible(true); }}>
                             <Icon name="edit" size={30} color={"blue"} />
                         </TouchableOpacity>
                         <TouchableOpacity onPress={() => { makeCompleteOrInComplete(id, "complete"); }}>
@@ -52,11 +55,12 @@ export default function TodoItem({ item, makeCompleteOrInComplete, removeTask })
                     </View>
                 }
             </View>
-            <EditTaskDialog
+            {selectedID && <InputDialog
                 visible={dialogVisible}
-                onAdd={handleAdd}
+                selectedID={selectedID}
+                onAdd={handleUpdateTask}
                 onClose={handleClose}
-            />
+            />}
         </View>
     );
 }
