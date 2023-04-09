@@ -1,6 +1,7 @@
 import { View, Text, TextInput, Modal, Button, StyleSheet, TouchableOpacity } from "react-native";
 import { useEffect, useState, useContext } from "react";
 import { DataContext } from "../App";
+import { globalStyles } from "../styles/global";
 
 export default function EditTaskDialog(props) {
     const { selectedID } = props;
@@ -32,21 +33,21 @@ export default function EditTaskDialog(props) {
 
     return (
         <Modal visible={props.visible} animationType="slide">
-            <View style={styles.container}>
+            <View style={globalStyles.inputModalContainer}>
                 <TextInput
-                    style={styles.input}
+                    style={globalStyles.input}
                     onChangeText={(value) => { setValuesOfTask("title", value) }}
                     value={task.title}
                     placeholder={"Title"}
                 />
                 <TextInput
-                    style={styles.input}
+                    style={globalStyles.input}
                     onChangeText={(value) => { setValuesOfTask("description", value) }}
                     value={task.description}
                     placeholder={"description"}
                 />
                 {customError.length > 0 && <Text style={{ color: "red" }}>{`*${customError}`}</Text>}
-                <View style={styles.buttonContainer}>
+                <View style={globalStyles.buttonContainer}>
                     <Button title="Cancel" onPress={props.onClose} />
                     <Button title={selectedID ? "Update" : "Add"} onPress={handleAddOrUpdate} />
                 </View>
@@ -54,24 +55,3 @@ export default function EditTaskDialog(props) {
         </Modal>
     );
 };
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        gap: 10
-    },
-    input: {
-        borderWidth: 1,
-        borderColor: 'gray',
-        padding: 10,
-        marginVertical: 10,
-        width: '80%',
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        gap: 10
-    },
-});

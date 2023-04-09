@@ -1,4 +1,4 @@
-let data = [
+let dummyData = [
     {
         id: "1",
         title: "Task 1",
@@ -60,3 +60,5 @@ let data = [
         completed: false,
     },
 ];
+
+export { dummyData };

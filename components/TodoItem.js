@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Alert, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import { DataContext } from "../App";
 import InputDialog from "./InputDialog";
+import { globalStyles } from "../styles/global";
 
 export default function TodoItem({ item, makeCompleteOrInComplete, removeTask }) {
     const { id, title, description, completed } = item;
@@ -31,18 +32,18 @@ export default function TodoItem({ item, makeCompleteOrInComplete, removeTask })
         ]);
 
     return (
-        <View style={styles.taskItem}>
+        <View style={globalStyles.taskItem}>
             <View style={{ maxWidth: "70%" }}>
-                <Text style={[styles.title, { textDecorationLine: completed ? "line-through" : "none" },]}>
+                <Text style={[globalStyles.title, { textDecorationLine: completed ? "line-through" : "none" },]}>
                     {title}
                 </Text>
-                <Text style={[styles.subtitle, { textDecorationLine: completed ? "line-through" : "none" },]}>
+                <Text style={[globalStyles.subtitle, { textDecorationLine: completed ? "line-through" : "none" },]}>
                     {description}
                 </Text>
             </View>
             <View>
                 {completed ?
-                    <View style={styles.buttonContainer}>
+                    <View style={globalStyles.buttonContainer}>
                         <TouchableOpacity onPress={() => { createTwoButtonAlert(id) }}>
                             <Icon name="delete" size={30} color={"red"} />
                         </TouchableOpacity>
@@ -51,7 +52,7 @@ export default function TodoItem({ item, makeCompleteOrInComplete, removeTask })
                         </TouchableOpacity>
                     </View>
                     :
-                    <View style={styles.buttonContainer}>
+                    <View style={globalStyles.buttonContainer}>
                         <TouchableOpacity onPress={() => { setSelectedID(id); setDialogVisible(true); }}>
                             <Icon name="edit" size={30} color={"blue"} />
                         </TouchableOpacity>
@@ -70,30 +71,3 @@ export default function TodoItem({ item, makeCompleteOrInComplete, removeTask })
         </View>
     );
 }
-
-const styles = StyleSheet.create({
-    taskItem: {
-        alignItems: "center",
-        flexDirection: "row",
-        justifyContent: "space-between",
-        paddingVertical: 20,
-        paddingHorizontal: 10,
-        marginVertical: 10,
-        borderWidth: 1,
-        borderStyle: "dashed",
-        borderRadius: 10,
-        gap: 20,
-        wordWrap: "break-word"
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-    },
-    description: {
-        fontSize: 15,
-    },
-    buttonContainer: {
-        flexDirection: "row",
-        gap: 15
-    }
-});
