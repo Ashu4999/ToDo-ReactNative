@@ -2,6 +2,7 @@ import { View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/AntDesign";
 import { useState } from "react";
 import InputDialog from "./InputDialog";
+import { globalStyles } from "../styles/global";
 
 export default function AddTaskComp({ data, setData }) {
     const [dialogVisible, setDialogVisible] = useState(false);
@@ -19,12 +20,8 @@ export default function AddTaskComp({ data, setData }) {
     };
 
     return (
-        <View style={{ position: "absolute", bottom: 15, right: 10 }}>
-            <TouchableOpacity style={{
-                backgroundColor: "#fc7703",
-                padding: 5,
-                borderRadius: 50
-            }} onPress={() => { setDialogVisible(true) }}>
+        <View style={globalStyles.addTaskContainer}>
+            <TouchableOpacity style={globalStyles.addTaskBtn} onPress={() => { setDialogVisible(true) }}>
                 <Icon name="plus" size={30} color={"#fff"} />
             </TouchableOpacity>
             <InputDialog

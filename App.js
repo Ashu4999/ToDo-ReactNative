@@ -4,11 +4,13 @@ import AddTaskComp from "./components/AddTaskComp";
 import EmptyListComp from "./components/EmptyListComp";
 import Header from "./components/Header";
 import TodoItem from "./components/TodoItem";
+import { dummyData } from './components/dummyData';
+import { globalStyles } from "./styles/global";
 
 const DataContext = createContext();
 
 export default function App() {
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([...dummyData]);
 
   function makeCompleteOrInComplete(id, whichOperation) {
     let tempArray = data;
@@ -31,11 +33,11 @@ export default function App() {
 
   return (
     <DataContext.Provider value={{ data, setData }} >
-      <View style={{ height: "100%" }}>
+      <View style={globalStyles.container}>
         <Header />
-        <View style={styles.taskContainer}>
+        <View style={globalStyles.taskContainer}>
           <FlatList
-            keyExtractor={(item) => item?.id}
+            keyExtractor={(item) => item.id}
             data={data}
             renderItem={({ item }) => (
               <TodoItem
@@ -44,7 +46,7 @@ export default function App() {
                 removeTask={removeTask} />
             )}
             ListEmptyComponent={<EmptyListComp message={"No task added"} />}
-            contentContainerStyle={{ flexGrow: 1, justifyContent: 'center' }}
+            contentContainerStyle={globalStyles.flatListStyle}
           />
         </View>
         <AddTaskComp data={data} setData={setData} />
@@ -52,12 +54,5 @@ export default function App() {
     </DataContext.Provider>
   );
 }
-
-const styles = StyleSheet.create({
-  taskContainer: {
-    margin: 30,
-    justifyContent: "center",
-  },
-});
 
 export { DataContext };
